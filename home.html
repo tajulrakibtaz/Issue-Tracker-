@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker || Home</title>
+     <!-- daisy and tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- font awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="max-w-[1600px] m-auto">
+    <!-- nav bar -->
+     <nav>
+        <div class="navbar bg-base-100 shadow-sm p-5 flex flex-col md:flex-row gap-5 ">
+            <div class="flex-1">
+                <div class="flex gap-3">
+                    <img class="max-w-[36px]" src="assets/github-logo.png" alt="">
+                    <p class="font-bold text-[24px]">GitHub Issues Tracker</p>
+                </div>
+
+            </div>
+            <div class="flex gap-2">
+
+                <div class="relative w-full max-w-md">
+
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                    <input type="text" id="searchInput" placeholder="Search issues..."
+                        class="w-full border border-gray-300 rounded-md py-2 pl-10 pr-4 " />
+
+                </div>
+                <div class="w-[180px]">
+                    <button class="btn btn-primary">+ New Issue</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>
