@@ -4,8 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Tracker || Login</title>
+ <!-- daisy and tailwind -->
+     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<!-- font awsome -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body class="max-w-[520px] m-auto shadow rounded-md p-[32px]  mt-20">
     
+<!-- first part  -->
+<section class="items-center flex flex-col justify-center">
+        <img src="assets/github-logo.png" alt="">
+        <h1 class="font-bold text-[24px]">GitHub Issues Tracker</h1>
+        <p>Sign in to manage your issues</p>
+    </section>
+
+<!-- input -->
+       <section class="items-center flex justify-center">
+        <fieldset class="fieldset  border-base-300 rounded-box w-xs  p-4 mt-7">
+  
+
+  <label class="label">Username</label>
+  <input id="username" type="email" class="input" placeholder="Enter Username" />
+
+  <label  class="label">Password</label>
+  <input id="password" type="password" class="input" placeholder="Enter Password" />
+
+  <button id="singinbtn"  class="btn btn-neutral mt-4 bg-blue-500 ">Sign In</button>
+</fieldset>
+    </section>
+<!-- last part -->
+<section class="flex flex-col items-center">
+    <p class="font-bold">Demo Credentials:</p>
+    
+    <p>Username: admin
+<br>
+Password: admin123</p>
+</section>
+
+
+
+
 </body>
 </html>
