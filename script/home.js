@@ -31,6 +31,7 @@ allCards();
 
 // openBtn working 
 openBtn.addEventListener("click",async function(){
+    
     openBtn.classList.remove("bg-gray-300","text-black");
     openBtn.classList.add("bg-purple-700","text-white");
      allBtn.classList.remove("bg-purple-700","text-white");
@@ -82,10 +83,6 @@ card.className="card bg-base-100 max-w-[260px] shadow-sm cursor-pointer";
 card.addEventListener("click", function(){
 openIssue(element.id);
 });
-card.addEventListener("click", function(){
-openIssue(element.id);
-});
-
 
 card.innerHTML=`
 <div>
@@ -118,6 +115,7 @@ ${element.priority}
 <!-- labels -->
 <div class="flex gap-1 mt-2">
 
+${element.labels[0] ? `
 <div class="badge badge-soft badge-secondary rounded-full">
 ${element.labels[0]==='bug'
 ?'<i class="fa-solid fa-bug"></i>'
@@ -126,10 +124,11 @@ ${element.labels[0]==='bug'
 :element.labels[0]==='enhancement'
 ?'<i class="fa-solid fa-spray-can-sparkles"></i>'
 :''}
-
-${element.labels[0] ? element.labels[0] : ""}
+${element.labels[0]}
 </div>
+` : ""}
 
+${element.labels[1] ? `
 <div class="badge badge-soft badge-warning">
 ${element.labels[1]==='bug'
 ?'<i class="fa-solid fa-bug"></i>'
@@ -138,9 +137,9 @@ ${element.labels[1]==='bug'
 :element.labels[1]==='enhancement'
 ?'<i class="fa-solid fa-spray-can-sparkles"></i>'
 :''}
-
-${element.labels[1] ? element.labels[1] : ""}
+${element.labels[1]}
 </div>
+` : ""}
 
 </div>
 
@@ -205,7 +204,7 @@ searchInput.addEventListener("keyup", function(e){
 const text = e.target.value.trim();
 
 if(text === ""){
-renderCards(issues); // show all again
+renderCards(issues); 
 return;
 }
 
@@ -214,7 +213,7 @@ searchIssues(text);
 });
 
 
-async function openIssue(id){
+async function openIssue(id) {
 
 loadingDisplay.classList.remove("hidden");
 loadingDisplay.classList.add("flex");
@@ -226,66 +225,59 @@ loadingDisplay.classList.add("hidden");
 
 const issue = data.data;
 
-alert(`
-Title: ${issue.title}
+// Fill modal fields
+document.getElementById("modalTitle").innerText = issue.title;
 
-Description: ${issue.description}
+const statusEl = document.getElementById("modalStatus");
+statusEl.innerText = issue.status;
+statusEl.className = issue.status === "open" ? "badge badge-success" : "badge badge-secondary";
 
-Author: ${issue.author}
+document.getElementById("modalAuthor").innerText = `Opened by ${issue.author}`;
+document.getElementById("modalDate").innerText = new Date(issue.createdAt).toLocaleDateString();
 
-Status: ${issue.status}
+document.getElementById("modalDescription").innerText = issue.description;
 
-Priority: ${issue.priority}
-`);
+document.getElementById("modalAssignee").innerText = issue.author;
 
+const priorityEl = document.getElementById("modalPriority");
+priorityEl.innerText = issue.priority.toUpperCase();
+priorityEl.className =
+issue.priority === "high"
+? "badge badge-error"
+: issue.priority === "medium"
+? "badge badge-warning"
+: "badge badge-info";
+
+
+// FIXED LABELS
+const labelsContainer = document.getElementById("modalLabels");
+labelsContainer.innerHTML = "";
+
+issue.labels.forEach((label) => {
+
+const span = document.createElement("span");
+
+if(label === "bug"){
+span.className = "badge badge-soft badge-secondary";
+span.innerHTML = '<i class="fa-solid fa-bug mr-1"></i> bug';
+}
+else if(label === "help wanted"){
+span.className = "badge badge-soft badge-warning";
+span.innerHTML = '<i class="fa-solid fa-life-ring mr-1"></i> help wanted';
+}
+else if(label === "enhancement"){
+span.className = "badge badge-soft badge-info";
+span.innerHTML = '<i class="fa-solid fa-spray-can-sparkles mr-1"></i> enhancement';
+}
+else{
+span.className = "badge badge-soft badge-info";
+span.innerText = label;
 }
 
+labelsContainer.appendChild(span);
 
-async function openIssue(id) {
-  loadingDisplay.classList.remove("hidden");
-  loadingDisplay.classList.add("flex");
+});
 
-  const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
-  const data = await res.json();
+document.getElementById("issueModal").showModal();
 
-  loadingDisplay.classList.add("hidden");
-
-  const issue = data.data;
-
-  // Fill modal fields
-  document.getElementById("modalTitle").innerText = issue.title;
-
-  const statusEl = document.getElementById("modalStatus");
-  statusEl.innerText = issue.status;
-  statusEl.className = issue.status === "open" ? "badge badge-success" : "badge badge-secondary";
-
-  document.getElementById("modalAuthor").innerText = `Opened by ${issue.author}`;
-  document.getElementById("modalDate").innerText = new Date(issue.createdAt).toLocaleDateString();
-
-  document.getElementById("modalDescription").innerText = issue.description;
-
-  document.getElementById("modalAssignee").innerText = issue.author;
-
-  const priorityEl = document.getElementById("modalPriority");
-  priorityEl.innerText = issue.priority.toUpperCase();
-  priorityEl.className =
-    issue.priority === "high"
-      ? "badge badge-error"
-      : issue.priority === "medium"
-      ? "badge badge-warning"
-      : "badge badge-info";
-
-  // Labels
-  const labelsContainer = document.getElementById("modalLabels");
-  labelsContainer.innerHTML = "";
-  issue.labels.forEach((label) => {
-    const span = document.createElement("span");
-    span.className = "badge badge-outline";
-    span.innerText = label;
-    labelsContainer.appendChild(span);
-  });
-
-  // Show the modal
-  document.getElementById("issueModal").showModal();
 }
-
