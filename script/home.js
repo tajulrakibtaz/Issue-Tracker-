@@ -197,5 +197,95 @@ renderCards(data.data);
 
 }
 
+// search functiong 
 
+
+searchInput.addEventListener("keyup", function(e){
+
+const text = e.target.value.trim();
+
+if(text === ""){
+renderCards(issues); // show all again
+return;
+}
+
+searchIssues(text);
+
+});
+
+
+async function openIssue(id){
+
+loadingDisplay.classList.remove("hidden");
+loadingDisplay.classList.add("flex");
+
+const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+const data = await res.json();
+
+loadingDisplay.classList.add("hidden");
+
+const issue = data.data;
+
+alert(`
+Title: ${issue.title}
+
+Description: ${issue.description}
+
+Author: ${issue.author}
+
+Status: ${issue.status}
+
+Priority: ${issue.priority}
+`);
+
+}
+
+
+async function openIssue(id) {
+  loadingDisplay.classList.remove("hidden");
+  loadingDisplay.classList.add("flex");
+
+  const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+  const data = await res.json();
+
+  loadingDisplay.classList.add("hidden");
+
+  const issue = data.data;
+
+  // Fill modal fields
+  document.getElementById("modalTitle").innerText = issue.title;
+
+  const statusEl = document.getElementById("modalStatus");
+  statusEl.innerText = issue.status;
+  statusEl.className = issue.status === "open" ? "badge badge-success" : "badge badge-secondary";
+
+  document.getElementById("modalAuthor").innerText = `Opened by ${issue.author}`;
+  document.getElementById("modalDate").innerText = new Date(issue.createdAt).toLocaleDateString();
+
+  document.getElementById("modalDescription").innerText = issue.description;
+
+  document.getElementById("modalAssignee").innerText = issue.author;
+
+  const priorityEl = document.getElementById("modalPriority");
+  priorityEl.innerText = issue.priority.toUpperCase();
+  priorityEl.className =
+    issue.priority === "high"
+      ? "badge badge-error"
+      : issue.priority === "medium"
+      ? "badge badge-warning"
+      : "badge badge-info";
+
+  // Labels
+  const labelsContainer = document.getElementById("modalLabels");
+  labelsContainer.innerHTML = "";
+  issue.labels.forEach((label) => {
+    const span = document.createElement("span");
+    span.className = "badge badge-outline";
+    span.innerText = label;
+    labelsContainer.appendChild(span);
+  });
+
+  // Show the modal
+  document.getElementById("issueModal").showModal();
+}
 
