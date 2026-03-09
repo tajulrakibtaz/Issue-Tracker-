@@ -167,6 +167,35 @@ const openIssues = issues.filter(issue => issue.status === "open");
 renderCards(openIssues);
 
 });
+// closed filterring 
+closedBtn.addEventListener("click",function(){
+
+const closedIssues = issues.filter(issue => issue.status === "closed");
+
+renderCards(closedIssues);
+
+});
+// all filtering 
+allBtn.addEventListener("click",function(){
+
+renderCards(issues);
+
+});
+// searcg 
+async function searchIssues(searchText){
+
+loadingDisplay.classList.remove("hidden");
+loadingDisplay.classList.add("flex");
+
+const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`);
+
+const data = await res.json();
+
+loadingDisplay.classList.add("hidden");
+
+renderCards(data.data);
+
+}
 
 
 
